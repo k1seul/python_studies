@@ -68,6 +68,7 @@ Hanseul's studies on python(python, pytorch etc.)
 * **Function-Oriented Strategy**
 Define a function doing the exact thing as the class.
 
+  '''python
   def promo_1(order: Order) -> Decimal:
     rate = Decimal(0.05)
     if condition:
