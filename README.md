@@ -40,3 +40,43 @@ Hanseul's studies on python(python, pytorch etc.)
 * Variable References and Assignments: Variables in Python hold references to objects. Simple assignment copies the reference, not the object, while augmented assignments (e.g., +=) create new objects for immutable items but modify mutable items in place. Rebinding a variable to a new object discards the reference to the original object.
 * Function Parameter Behavior: Function arguments are passed as aliases. Functions can modify mutable arguments, and changes to mutable default parameter values persist across function calls if not handled carefully.
 * Garbage Collection and Weak References: Python’s garbage collection discards objects with zero references, including cyclically referenced groups. Weak references, useful for non-owning references to objects, are supported through WeakValueDictionary, WeakKeyDictionary, WeakSet, and finalize.
+
+#### ch10. Design Patterns with First-Class Functions
+*design pattern* is a general reciple for solving common design problems. 
+### Refactoring
+* **Classic Strategy**
+Define a family of algorithms, excapsulate each one, and make them interchangable
+'''
+class Promotion(ABC):
+  @abstractmethod ##-> use abstract method so it can changed later by childeren classes
+  def discount(self, order: Order) -> Decimal:
+      """Return discount as a positive dollar amount"""
+
+class Promo1(Promotion):
+  def discount(self, order: Order) -> Decimal:
+    rate = Decimal(0.05)
+    if condition:
+      return order.total() * rate 
+    return Decimal(0) 
+'''
+
+* **Function-Oriented Strategy**
+Define a funtion doing the exact thing as class.
+'''
+def promo_1(order: Order) -> Decimal:
+  rate = Decimal(0.05)
+  if condition:
+    return order.total() * rate
+  return Decimal(0)
+'''
+
+| Refactoring Aspect               | **Class Refactoring**                                                                                      | **Function Refactoring**                                                                       |
+|----------------------------------|------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
+| **Modularity & Reusability**     | Encourages modularity and reuse.                                                                           | Improves readability by breaking down code into smaller, meaningful pieces.                    |
+| **Encapsulation**                | Encapsulates related data and behavior, improving readability.                                             | Lacks the structural benefits and encapsulation of class-based refactoring for complex systems.|
+| **Code Complexity**              | Can lead to over-engineering and increased complexity with inheritance.                                    | May lead to scattered code if functions are too specialized or granular.                       |
+| **Readability & Maintainability**| Makes code easier to maintain by grouping related functionality.                                           | Reduces code duplication, especially for repeated tasks.                                       |
+| **Performance**                  | Can increase memory usage and reduce performance due to object-oriented overhead.                          | May increase stack usage if functions are deeply nested or overly fragmented.                  |
+| **Testing**                      | Simplifies testing by breaking functionality into discrete, testable units.                               | Eases testing by allowing isolated, unit-based function tests.                                 |
+| **Flexibility & Scope**          | Supports polymorphism, allowing flexible use of derived classes.                                          | Isolates specific actions, limiting scope and impact of changes to individual functions.       |
+
