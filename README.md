@@ -44,31 +44,33 @@ Hanseul's studies on python(python, pytorch etc.)
 #### ch10. Design Patterns with First-Class Functions
 *design pattern* is a general reciple for solving common design problems. 
 ### Refactoring
-* **Classic Strategy**
-Define a family of algorithms, excapsulate each one, and make them interchangable
-'''
-class Promotion(ABC):
-  @abstractmethod ##-> use abstract method so it can changed later by childeren classes
-  def discount(self, order: Order) -> Decimal:
-      """Return discount as a positive dollar amount"""
 
-class Promo1(Promotion):
-  def discount(self, order: Order) -> Decimal:
+* **Classic Strategy**  
+  Define a family of algorithms, encapsulate each one, and make them interchangeable.
+
+  ```python
+  from abc import ABC, abstractmethod
+  from decimal import Decimal
+  
+  class Promotion(ABC):
+      @abstractmethod  # Use abstract method so it can be changed later by children classes
+      def discount(self, order: Order) -> Decimal:
+          """Return discount as a positive dollar amount"""
+
+  class Promo1(Promotion):
+      def discount(self, order: Order) -> Decimal:
+          rate = Decimal(0.05)
+          if condition:
+              return order.total() * rate 
+          return Decimal(0)
+
+  def promo_1(order: Order) -> Decimal:
     rate = Decimal(0.05)
     if condition:
-      return order.total() * rate 
-    return Decimal(0) 
-'''
+        return order.total() * rate
+    return Decimal(0)
 
-* **Function-Oriented Strategy**
-Define a funtion doing the exact thing as class.
-'''
-def promo_1(order: Order) -> Decimal:
-  rate = Decimal(0.05)
-  if condition:
-    return order.total() * rate
-  return Decimal(0)
-'''
+
 
 | Refactoring Aspect               | **Class Refactoring**                                                                                      | **Function Refactoring**                                                                       |
 |----------------------------------|------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
