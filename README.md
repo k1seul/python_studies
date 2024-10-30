@@ -130,3 +130,81 @@ Define a function doing the exact thing as the class.
 * Modularity: The promotion logic is separated from the main order processing, making it more readable and maintainable.
 * Runtime Flexibility: Promotions can be evaluated dynamically, allowing selection of the best applicable strategy.
 
+
+### Command Pattern
+
+* **Overview**  
+  The Command Pattern encapsulates a request as an object, allowing you to parameterize clients with queues, requests, or logs. It’s useful for undo operations and when you need to queue commands.
+
+  ```python
+  from abc import ABC, abstractmethod
+
+  # Command Interface
+  class Command(ABC):
+      @abstractmethod
+      def execute(self) -> None:
+          """Execute the command."""
+
+      @abstractmethod
+      def undo(self) -> None:
+          """Undo the command."""
+
+  # Receiver: the class on which operations are performed
+  class Light:
+      def on(self) -> None:
+          print("Light is on")
+
+      def off(self) -> None:
+          print("Light is off")
+
+  # Concrete Command to turn on the light
+  class LightOnCommand(Command):
+      def __init__(self, light: Light):
+          self.light = light
+
+      def execute(self) -> None:
+          self.light.on()
+
+      def undo(self) -> None:
+          self.light.off()
+
+  # Concrete Command to turn off the light
+  class LightOffCommand(Command):
+      def __init__(self, light: Light):
+          self.light = light
+
+      def execute(self) -> None:
+          self.light.off()
+
+      def undo(self) -> None:
+          self.light.on()
+
+  # Invoker: stores commands and executes them
+  class RemoteControl:
+      def __init__(self):
+          self.history = []
+
+      def submit(self, command: Command) -> None:
+          command.execute()
+          self.history.append(command)
+
+      def undo_last(self) -> None:
+          if self.history:
+              command = self.history.pop()
+              command.undo()
+
+  # Client Code
+  light = Light()
+  light_on = LightOnCommand(light)
+  light_off = LightOffCommand(light)
+  remote = RemoteControl()
+
+  remote.submit(light_on)  # Output: "Light is on"
+  remote.submit(light_off) # Output: "Light is off"
+  remote.undo_last()       # Output: "Light is on" (undoes turning the light off)
+
+
+**Benefits**
+* Encapsulation: Commands encapsulate all information needed for a request.
+* Undoable Actions: Since each command knows how to undo itself, actions can easily be reversed.
+* Extensibility: New commands can be added without modifying existing code.
