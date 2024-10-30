@@ -87,3 +87,46 @@ Define a function doing the exact thing as the class.
 | **Testing**                      | Simplifies testing by breaking functionality into discrete, testable units.                               | Eases testing by allowing isolated, unit-based function tests.                                 |
 | **Flexibility & Scope**          | Supports polymorphism, allowing flexible use of derived classes.                                          | Isolates specific actions, limiting scope and impact of changes to individual functions.       |
 
+
+### Decorator-Enhanced Strategy Pattern
+
+* **Overview**  
+  Use a decorator to register and apply different promotion strategies dynamically. This approach simplifies adding or modifying strategies without altering existing code.
+
+  ```python
+  from decimal import Decimal
+  from typing import Callable, List
+
+  # Dictionary to hold all registered promotion strategies
+  promotions: List[Callable[[Order], Decimal]] = []
+
+  # Decorator for registering a promotion strategy
+  def promotion_strategy(func: Callable[[Order], Decimal]) -> Callable[[Order], Decimal]:
+      promotions.append(func)
+      return func
+
+  # Example usage of the decorator to register a strategy
+  @promotion_strategy
+  def promo_1(order: Order) -> Decimal:
+      rate = Decimal(0.05)
+      if condition:
+          return order.total() * rate
+      return Decimal(0)
+
+  @promotion_strategy
+  def promo_2(order: Order) -> Decimal:
+      rate = Decimal(0.10)
+      if another_condition:
+          return order.total() * rate
+      return Decimal(0)
+
+  # Function to apply the best available promotion
+  def best_promotion(order: Order) -> Decimal:
+      return max(promo(order) for promo in promotions)
+
+
+**Benefits**
+* Extensibility: New promotion strategies can be added easily by defining a function and applying the @promotion_strategy decorator.
+* Modularity: The promotion logic is separated from the main order processing, making it more readable and maintainable.
+* Runtime Flexibility: Promotions can be evaluated dynamically, allowing selection of the best applicable strategy.
+
