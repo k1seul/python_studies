@@ -213,8 +213,8 @@ Define a function doing the exact thing as the class.
 #### ch11. A Pythonic Object
 talks about python class methods 
 
-#### __method__ (*dunder method*)
-##### Difference between __str__, __repr__ 
+#### \_\_method__ (*dunder method*)
+##### Difference between \__str__, \__repr__ 
 
   ```python
   class Point:
@@ -237,7 +237,7 @@ talks about python class methods
   
   # Using __repr__
   print(repr(p))  # Output: Point(x=1, y=2)
-
+  ```
 
 #### Difference between class method and static method
 
@@ -270,3 +270,55 @@ talks about python class methods
   # Calling the static method with one argument ('spam')
   # This will print a tuple containing the argument
   print(Demo.statmeth('spam'))  # Output: ('spam',)
+  ```
+#### @property 
+
+@property
+The @property decorator is used to define a method as a property. This allows you to access the method as if it were an attribute, providing a way to encapsulate getter and setter functionality without changing the way the attribute is accessed
+
+
+#### \__ (Double Underscore)
+The double underscore prefix (also known as "dunder") is used in Python to invoke name mangling, which helps avoid naming conflicts in subclasses. Attributes with a double underscore are intended to be private to the class and are not meant to be accessed directly from outside the class.
+
+Name Mangling: When you prefix a variable with two underscores, Python changes its name in a way that makes it harder to create subclasses that accidentally override the private attributes and methods.
+
+#### Saving memory with \__slots__ 
+
+When you define a class in Python, each instance of that class typically has a dictionary (\__dict__) that stores all of its attributes. This allows for dynamic attribute creation but can consume a significant amount of memory. By defining \__slots__, you can explicitly declare a fixed set of attributes for your class, and Python will allocate a more memory-efficient structure to hold these attributes, eliminating the need for \__dict__
+
+
+```python
+import sys
+
+class PointWithSlots:
+    __slots__ = ['x', 'y']  # Declare the attributes to be stored
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
+class PointWithoutSlots:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
+# Memory size of an instance without __slots__
+point_without_slots = PointWithoutSlots(1, 2)
+print(f"Memory without __slots__: {sys.getsizeof(point_without_slots)} bytes")
+
+# Memory size of an instance with __slots__
+point_with_slots = PointWithSlots(1, 2)
+print(f"Memory with __slots__: {sys.getsizeof(point_with_slots)} bytes")
+
+"""
+Output:
+Memory without __slots__: 56 bytes
+Memory with __slots__: 48 bytes
+"""
+
+```
+#### Huge memory saving! 
+![image](https://github.com/user-attachments/assets/78878e78-e16d-479d-aef7-e3528bf94325)
+
