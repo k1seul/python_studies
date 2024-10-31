@@ -208,3 +208,65 @@ Define a function doing the exact thing as the class.
 * Encapsulation: Commands encapsulate all information needed for a request.
 * Undoable Actions: Since each command knows how to undo itself, actions can easily be reversed.
 * Extensibility: New commands can be added without modifying existing code.
+
+
+#### ch11. A Pythonic Object
+talks about python class methods 
+
+#### __method__ (*dunder method*)
+##### Difference between __str__, __repr__ 
+
+  ```python
+  class Point:
+      def __init__(self, x, y):
+          self.x = x
+          self.y = y
+  
+      def __str__(self):
+          return f"Point({self.x}, {self.y})"
+  
+      def __repr__(self):
+          return f"Point(x={self.x}, y={self.y})"
+  
+  # Create an instance of Point
+  p = Point(1, 2)
+  
+  # Using __str__
+  print(str(p))  # Output: Point(1, 2)
+  print(p)       # Output: Point(1, 2)
+  
+  # Using __repr__
+  print(repr(p))  # Output: Point(x=1, y=2)
+
+
+#### Difference between class method and static method
+
+   ```python
+  class Demo:
+      # Class method that takes variable arguments
+      @classmethod
+      def klassmeth(*args):
+          # Returns the arguments passed to the method
+          return args 
+  
+      # Static method that also takes variable arguments
+      @staticmethod
+      def statmeth(*args):
+          # Returns the arguments passed to the method
+          return args 
+  
+  # Calling the class method with no arguments
+  # This will print a tuple with the class itself as the first argument
+  print(Demo.klassmeth())  # Output: (<class '__main__.Demo'>,)
+  
+  # Calling the class method with one argument ('spam')
+  # This will print a tuple containing the class and the argument
+  print(Demo.klassmeth('spam'))  # Output: (<class '__main__.Demo'>, 'spam')
+  
+  # Calling the static method with no arguments
+  # This will print an empty tuple
+  print(Demo.statmeth())  # Output: ()
+  
+  # Calling the static method with one argument ('spam')
+  # This will print a tuple containing the argument
+  print(Demo.statmeth('spam'))  # Output: ('spam',)
