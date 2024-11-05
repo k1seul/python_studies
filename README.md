@@ -322,3 +322,66 @@ Memory with __slots__: 48 bytes
 #### Huge memory saving! 
 ![image](https://github.com/user-attachments/assets/78878e78-e16d-479d-aef7-e3528bf94325)
 
+# ch13. Interface, Protocols, and ABCs 
+
+## Duck Typing in Python
+Duck Typing is a programming concept in Python where the type or class of an object is determined by its behavior (methods and properties) rather than its explicit type. The term comes from the phrase:
+
+"If it looks like a duck, swims like a duck, and quacks like a duck, then it probably is a duck."
+
+In Python, you don't need to explicitly check an object's type. Instead, you can just use the object if it implements the required methods or properties.
+
+## Protocols
+
+*Dynamic Protocol
+  * Defined by convention: A class adheres to a dynamic protocol if it implements methods with specific names and signatures, as described in documentation or expected by convention.
+  * No explicit type checks: The conformance to the protocol is determined at runtime by duck typing—"If it looks like a duck and quacks like a duck, it must be a duck."
+
+* Usage: Monkey patching
+  * Quick fix method by inserting the method needed
+
+```python
+def new_greet():
+    print("Hi, Universe!")
+
+# Monkey patch the greet method
+OriginalClass.greet = new_greet
+
+# Now, any instance of OriginalClass will use the patched method
+obj = OriginalClass()
+obj.greet()  # Output: Hi, Universe!
+```
+
+* Static Protocol
+  * Explicit definition: A static protocol is explicitly defined by subclassing typing.Protocol.
+  * Type checking: Tools like mypy can check at compile time whether a class implements the required methods and attributes defined in the protocol
+ 
+## Goose Typing 
+
+Goose Typing is not a standard term in programming but is sometimes humorously used to contrast with Duck Typing. While Duck Typing is about checking if an object behaves like a duck (i.e., has the required methods), Goose Typing emphasizes that the object should not only have the methods but also behave correctly when those methods are called.
+
+* What Goose Typing Implies:
+  * Correct Behavior: In addition to having the right methods, the object must also perform correctly according to the expected semantics of those methods.
+  * Deeper Verification: Goose Typing implies a stricter adherence to expected behavior, not just method names and signatures
+
+## Abstract Base Classes(ABC) 
+
+In Python, abc stands for Abstract Base Classes, a module in the standard library used to define abstract base classes. Abstract base classes (ABCs) are a form of interface definition, allowing developers to specify methods that must be implemented by any concrete subclass.
+
+Key Points about abc Module
+Purpose:
+
+The abc module provides the infrastructure for defining abstract base classes.
+It helps enforce that certain methods or properties are implemented in subclasses.
+Useful in defining and ensuring adherence to an interface or contract in a hierarchy of classes.
+Defining an Abstract Base Class:
+
+You define an ABC by subclassing ABC (from the abc module).
+Use the @abstractmethod decorator to mark methods that must be implemented by subclasses.
+
+  ![[Figure from Fluent Python](https://www.oreilly.com/library/view/fluent-python-2nd/9781492056348/)](https://github.com/user-attachments/assets/369ce794-7b91-43d2-8ccf-71bba56d5ede)
+
+* For fun Exception class hierarchy
+![image](https://github.com/user-attachments/assets/736a8443-32b7-448f-8fc2-a132cb276ce2)
+
+
