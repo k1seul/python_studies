@@ -385,3 +385,39 @@ Use the @abstractmethod decorator to mark methods that must be implemented by su
 ![image](https://github.com/user-attachments/assets/736a8443-32b7-448f-8fc2-a132cb276ce2)
 
 
+### abc.register 
+The abc.register method in Python allows you to manually register a class as a virtual subclass of an abstract base class (ABC). This means that even though the class does not inherit from the ABC in the traditional sense, it will still be recognized as a subclass of that ABC. This can be useful when you want to associate a class with an ABC without altering its inheritance hierarchy.
+
+* Key Points:
+  * Virtual Subclass: The registered class is treated as a subclass of the ABC for issubclass and isinstance checks.
+  * No Enforcement: Unlike direct inheritance, registering a class as a virtual subclass does not enforce the implementation of abstract methods. This means the registered class is not required to implement the abstract methods of the ABC.
+  * Use Cases:
+    When you want to integrate third-party or legacy classes with an abstract base class without modifying their inheritance structure.
+    When you want to decouple the implementation from the inheritance.
+
+```python
+from abc import ABC, abstractmethod
+
+class Animal(ABC):
+    @abstractmethod
+    def sound(self):
+        pass
+
+class Vehicle:
+    def sound(self):
+        return "Vroom"
+
+# Register Vehicle as a virtual subclass of Animal
+Animal.register(Vehicle)
+
+# Now, Vehicle is recognized as a subclass of Animal
+print(issubclass(Vehicle, Animal))  # Outputs: True
+print(isinstance(Vehicle(), Animal))  # Outputs: True
+
+# However, Vehicle is not required to implement all abstract methods of Animal
+vehicle = Vehicle()
+print(vehicle.sound())  # Outputs: Vroom
+
+```
+
+
